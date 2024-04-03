@@ -1,0 +1,24 @@
+trigger:
+- main # This specifies the branch to trigger the pipeline
+
+pool:
+  vmImage: 'windows-latest' # Specifies the VM image to use for running the pipeline
+
+steps:
+- task: UseDotNet@2 # Use .NET Core task to set up the .NET Core SDK
+  displayName: 'Install .NET Core SDK'
+  inputs:
+    version: 3.x
+
+- task: DotNetCoreCLI@2 # Use .NET Core CLI task to restore dependencies, build, and test
+  displayName: 'Restore, Build, and Test'
+  inputs:
+    command: 'test'
+    projects: '**/*.csproj' # Path to the .csproj file(s) of your project
+
+- task: PublishBuildArtifacts@1 # Use task to publish build artifacts
+  displayName: 'Publish Build Artifacts'
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: 'drop'
+    publishLocation: 'Container'
