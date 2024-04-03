@@ -8,6 +8,16 @@ trigger:
 
 pool:
   vmImage: ubuntu-latest
+- task: VSTest@3
+  inputs:
+    testSelector: 'testPlan'
+    testPlan: '11'
+    testSuite: '12'
+    testConfiguration: '1'
+    searchFolder: '$(System.DefaultWorkingDirectory)'
+    uiTests: true
+    runInParallel: false
+    testRunTitle: 'after pipeline'
 
 steps:
 - script: echo Hello, world!
